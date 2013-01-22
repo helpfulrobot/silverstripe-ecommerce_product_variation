@@ -48,7 +48,7 @@ class ProductVariation extends DataObject implements BuyableModel{
 	/**
 	 * Standard SS variable.
 	 */
-	static $many_many = array(
+	public static $many_many = array(
 		'AttributeValues' => 'ProductAttributeValue'
 	);
 
