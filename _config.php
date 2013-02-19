@@ -58,7 +58,7 @@ ProductsAndGroupsModelAdmin:
 //$lang['en_US']['ProductAttributeType']['ATTRIBUTETYPES']  = "Product Attribute Types";
 
 // ________________ CMS
-Object::add_extension("EcommerceDatabaseAdmin","EcommerceProductVariationTaskDeleteVariations_EXT");
+//Object::add_extension("EcommerceDatabaseAdmin","EcommerceProductVariationTaskDeleteVariations_EXT");
 
 
 
