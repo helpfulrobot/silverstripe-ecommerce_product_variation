@@ -96,10 +96,9 @@ class ProductWithVariationDecorator extends DataObjectDecorator {
 		$variations = $this->owner->Variations();
 		if($variations && $variations->Count()){
 			$fields->addFieldToTab('Root.Content.Main',new LabelField('variationspriceinstructions','Price - Because you have one or more variations, you can vary the price in the "'.ProductVariation::get_plural_name().'" tab. You set the default price here.'), 'Price');
-			$fields->addFieldToTab('Root.Content.Details', new LiteralField('UpdateVariationsPrices', "<p class=\"message good\">Click <a href=\"{$this->owner->Link('updatevariationpricefromproduct')}\">here</a> to update all the variations with the price above (SAVE AND PUBLISH THE PRODUCT FIRST).</p>"), 'InternalItemID');
 			if(class_exists('DataObjectOneFieldUpdateController')) {
-				$link = DataObjectOneFieldUpdateController::popup_link('ProductVariation', 'Price', "ProductID = {$this->owner->ID}", '', 'here');
-				$tab->insertBefore(new LiteralField('PriceUpdateLink', '<p class="message good">Click ' . $link . ' to update variation prices.</p>'), 'Variations');
+				$link = DataObjectOneFieldUpdateController::popup_link('ProductVariation', 'Price', "ProductID = {$this->owner->ID}", '', 'update variation prices ...');
+				$tab->insertBefore(new LiteralField('PriceUpdateLink', '<p class="message good"> ' . $link . '</p>'), 'Variations');
 			}
 		}
 	}
@@ -486,7 +485,6 @@ class ProductWithVariationDecorator extends DataObjectDecorator {
 
 class ProductWithVariationDecorator_Controller extends Extension {
 
-
 	/**
 	 * tells us if Javascript should be used in validating
 	 * the product variation form.
@@ -505,24 +503,6 @@ class ProductWithVariationDecorator_Controller extends Extension {
 	protected static $alternative_validator_class_name = "";
 		static function set_alternative_validator_class_name($s) {self::$alternative_validator_class_name = $s;}
 		static function get_alternative_validator_class_name() {return self::$alternative_validator_class_name;}
-
-	/**
-	 * standard SS variable
-	 * @var Array
-	 */
-	public static $allowed_actions = array(
-		'updatevariationpricefromproduct',
-		'selectvariation'
-	);
-
-	function updatevariationpricefromproduct() {
-		$variations = $this->owner->Variations();
-		foreach($variations as $variation) {
-			$variation->Price = $this->owner->Price;
-			$variation->writeToStage('Stage');
-		}
-		return Director::redirectBack();
-	}
 
 	function VariationForm(){
 		$farray = array();
@@ -575,7 +555,7 @@ class ProductWithVariationDecorator_Controller extends Extension {
 		return $form;
 	}
 
-	function addVariation($data,$form){
+	function addVariation($data, $form){
 		//TODO: save form data to session so selected values are not lost
 		if(isset($data['ProductAttributes'])){
 			$data['ProductAttributes'] = Convert::raw2sql($data['ProductAttributes']);
