@@ -183,10 +183,10 @@ class CreateEcommerceVariations extends Controller {
 				user_error($obj->Title ." should be an instance of ProductAttributeType", E_USER_WARNING);
 			}*/
 		}
-
 		$this->_message = $this->_value.' '._t("CreateEcommerceVariations.HASBEENADDED",'has been added.');
 		return $this->jsonforform();
 	}
+
 	function remove() {
 		//is it Type or Value?
 		$obj = DataObject::get_by_id($this->_classname, $this->_id);

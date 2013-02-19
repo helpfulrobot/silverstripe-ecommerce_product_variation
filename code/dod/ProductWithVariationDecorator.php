@@ -226,6 +226,7 @@ class ProductWithVariationDecorator extends DataObjectDecorator {
 	 */
 
 	function generateVariationsFromAttributeValues(array $values) {
+		set_time_limit(0);
 		$cpt = 0;
 		$variations = array();
 		foreach($values as $typeID => $typeValues) {
@@ -260,6 +261,7 @@ class ProductWithVariationDecorator extends DataObjectDecorator {
 					'ProductID' => $this->owner->ID,
 					'Price' => $this->owner->Price
 				));
+				$newVariation->setSaveParentProduct(false);
 				$newVariation->write();
 				$newVariation->AttributeValues()->addMany($variation);
 			}
