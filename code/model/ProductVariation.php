@@ -807,7 +807,7 @@ class ProductVariation extends DataObject implements BuyableModel{
 	 */
 	function DisplayPrice() {return $this->getDisplayPrice();}
 	function getDisplayPrice() {
-		return EcommerceCurrency::display_price($this->CalculatedPrice());
+		return EcommerceCurrency::display_from_order_currency($this->CalculatedPrice());
 	}
 
 
