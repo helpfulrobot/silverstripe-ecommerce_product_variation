@@ -60,7 +60,8 @@ class ProductVariation extends DataObject implements BuyableModel{
 		'Title' => 'HTMLText',
 		'Link' => 'Text',
 		'AllowPurchaseNice' => 'Varchar',
-		'CalculatedPrice' => 'Currency'
+		'CalculatedPrice' => 'Currency',
+		'CalculatedPriceAsMoney' => 'Money'
 	);
 
 	/**
@@ -799,15 +800,14 @@ class ProductVariation extends DataObject implements BuyableModel{
 		}
 		return $price;
 	}
-
-
+	
 	/**
 	 * How do we display the price?
-	 * @return Money | Null
+	 * @return Money
 	 */
-	function DisplayPrice() {return $this->getDisplayPrice();}
-	function getDisplayPrice() {
-		return EcommerceCurrency::display_from_order_currency($this->CalculatedPrice());
+	function CalculatedPriceAsMoney() {return $this->getCalculatedPriceAsMoney();}
+	function getCalculatedPriceAsMoney() {
+		return EcommerceCurrency::get_money_object_from_order_currency($this->CalculatedPrice());
 	}
 
 
