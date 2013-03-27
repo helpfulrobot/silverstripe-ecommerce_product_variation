@@ -28,7 +28,7 @@
 			<th scope="row" class="label">$Title.XML</th>
 	<% end_if %>
 			<td class="price">
-				<span class="price">$CalculatedPriceAsMoney.NiceWithSymbol</span>
+				<span class="price">$CalculatedPriceAsMoney.NiceDefaultFormat</span>
 				<% include Order_Content_DisplayPrice %>
 			</td>
 			<td class="actionCell">
