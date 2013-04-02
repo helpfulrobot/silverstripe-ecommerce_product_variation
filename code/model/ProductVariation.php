@@ -800,7 +800,7 @@ class ProductVariation extends DataObject implements BuyableModel{
 		}
 		return $price;
 	}
-	
+
 	/**
 	 * How do we display the price?
 	 * @return Money
@@ -907,19 +907,30 @@ class ProductVariation_OrderItem extends Product_OrderItem {
 
 	/**
 	 * price per item
-	 *@return Float
+	 * @return Float
 	 **/
 	function UnitPrice($recalculate = false) {return $this->getUnitPrice($recalculate);}
 	function getUnitPrice($recalculate = false) {
-		$unitprice = 0;
-		if($this->priceHasBeenFixed() && !$recalculate) {
-			return parent::getUnitPrice($recalculate);
+		$unitPrice = 0;
+		if($this->priceHasBeenFixed($recalculate) && !$recalculate) {
+			$unitPrice = parent::getUnitPrice($recalculate);
 		}
 		elseif($productVariation = $this->ProductVariation()){
-			$unitprice = $productVariation->getCalculatedPrice();
-			$this->extend('updateUnitPrice',$unitprice);
+			if(!isset(self::$calculated_buyable_price[$this->ID]) || $recalculate) {
+				self::$calculated_buyable_price[$this->ID] = $productVariation->getCalculatedPrice();
+			}
+			$unitPrice = self::$calculated_buyable_price[$this->ID];
 		}
-		return $unitprice;
+		else{
+			$unitPrice = 0;
+		}
+		$updatedUnitPrice = $this->extend('updateUnitPrice',$unitPrice);
+		if($updatedUnitPrice !== null) {
+			if(is_array($updatedUnitPrice) && count($updatedUnitPrice)) {
+				$unitPrice = $updatedUnitPrice[0];
+			}
+		}
+		return $unitPrice;
 	}
 
 	/**
