@@ -866,6 +866,8 @@ class ProductVariation extends DataObject implements BuyableModel{
 		if($member && Permission::checkMember($member, $shopAdminCode)) {
 			return true;
 		}
+		$extended = $this->extendedCan('canEdit', $member);
+		if($extended !== null) return $extended;
 		return parent::canEdit($member);
 	}
 
